@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura — 重新定义未来</title>
+<style>
+  /* ---------- 基础重置 ---------- */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  :root{
+    --bg:#fbfbfd;
+    --ink:#1d1d1f;
+    --ink-soft:#6e6e73;
+    --line:#d2d2d7;
+    --blue:#0071e3;
+    --blue-hover:#0077ed;
+    --glass:rgba(245,245,247,0.72);
+  }
+  body{
+    font-family:"SF Pro Display","SF Pro Text",-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Helvetica Neue",Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.47;
+    overflow-x:hidden;
+  }
+  a{color:var(--blue);text-decoration:none;}
+  a:hover{color:var(--blue-hover);text-decoration:underline;}
+  img{max-width:100%;display:block;}
+
+  /* ---------- 顶部导航 ---------- */
+  .nav{
+    position:fixed;top:0;left:0;right:0;height:48px;z-index:1000;
+    background:var(--glass);
+    backdrop-filter:saturate(180%) blur(20px);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(0,0,0,0.04);
+  }
+  .nav-inner{
+    max-width:1024px;margin:0 auto;height:100%;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;
+    font-size:14px;color:var(--ink);
+  }
+  .nav-brand{font-weight:600;letter-spacing:-.01em;font-size:17px;}
+  .nav-links{display:flex;gap:28px;list-style:none;}
+  .nav-links a{color:var(--ink);opacity:.82;}
+  .nav-links a:hover{opacity:1;text-decoration:none;}
+  .nav-cta{
+    background:var(--blue);color:#fff !important;padding:6px 14px;border-radius:980px;
+    font-size:13px;transition:background .25s ease;
+  }
+  .nav-cta:hover{background:var(--blue-hover);text-decoration:none;}
+  @media (max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- 通用区块 ---------- */
+  section{position:relative;}
+  .wrap{max-width:1024px;margin:0 auto;padding:0 22px;}
+  .center{text-align:center;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:120px 22px 60px;
+    background:
+      radial-gradient(1200px 600px at 50% -10%, #ffffff 0%, #f5f5f7 60%, #fbfbfd 100%);
+  }
+  .eyebrow{
+    font-size:19px;color:var(--ink-soft);font-weight:600;letter-spacing:.02em;
+    margin-bottom:10px;
+  }
+  .hero h1{
+    font-size:clamp(48px,9vw,96px);
+    font-weight:700;letter-spacing:-.02em;line-height:1.05;
+    background:linear-gradient(180deg,#1d1d1f 0%,#5a5a60 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero .sub{
+    font-size:clamp(21px,2.6vw,28px);color:var(--ink-soft);
+    margin-top:16px;max-width:720px;font-weight:400;
+  }
+  .hero .cta-row{
+    margin-top:32px;display:flex;gap:18px;flex-wrap:wrap;justify-content:center;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:12px 22px;border-radius:980px;font-size:17px;font-weight:400;
+    transition:all .25s ease;cursor:pointer;border:none;
+  }
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:var(--blue-hover);}
+  .btn-ghost{background:transparent;color:var(--blue);}
+  .btn-ghost:hover{background:rgba(0,113,227,0.06);text-decoration:none;}
+
+  /* 漂浮的产品视觉 */
+  .hero-visual{
+    margin-top:56px;width:min(680px,92vw);aspect-ratio:16/10;
+    border-radius:28px;
+    background:
+      radial-gradient(600px 300px at 30% 20%, rgba(0,113,227,.25), transparent 60%),
+      radial-gradient(500px 300px at 80% 80%, rgba(94,92,230,.25), transparent 60%),
+      linear-gradient(135deg,#0a0a0c,#1d1d1f);
+    box-shadow:0 30px 80px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.06);
+    position:relative;overflow:hidden;
+    animation:float 6s ease-in-out infinite;
+  }
+  @keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-12px);}
+  }
+  .hero-visual::after{
+    content:"";position:absolute;inset:0;
+    background:
+      radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.6), transparent),
+      radial-gradient(2px 2px at 70% 60%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 50% 80%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1.5px 1.5px at 85% 25%, rgba(255,255,255,.4), transparent);
+    opacity:.6;
+  }
+  .hero-visual .glow{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:60%;height:60%;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);
+    filter:blur(20px);
+  }
+
+  /* ---------- 通用章节标题 ---------- */
+  .section{padding:120px 0;}
+  .section h2{
+    font-size:clamp(36px,6vw,64px);font-weight:700;letter-spacing:-.01em;line-height:1.08;
+  }
+  .section .lead{
+    font-size:clamp(19px,2vw,24px);color:var(--ink-soft);margin-top:14px;max-width:680px;
+  }
+  .dark{background:#000;color:#f5f5f7;}
+  .dark h2,.dark .lead{color:#f5f5f7;}
+  .dark .lead{color:#a1a1a6;}
+  .dark a{color:#2997ff;}
+
+  /* ---------- 特性卡片网格 ---------- */
+  .grid{
+    display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:48px;
+  }
+  .card{
+    border-radius:24px;padding:32px;background:#fff;min-height:340px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+    transition:transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s ease;
+    overflow:hidden;position:relative;
+  }
+  .card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.08);}
+  .card h3{font-size:26px;font-weight:600;letter-spacing:-.01em;}
+  .card p{color:var(--ink-soft);font-size:17px;margin-top:8px;}
+  .card .visual{
+    flex:1;margin-top:24px;border-radius:18px;min-height:160px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-6{grid-column:span 6;}
+  .card-4{grid-column:span 4;}
+  @media (max-width:760px){ .card-6,.card-4{grid-column:span 12;} }
+
+  /* 视觉块 */
+  .v1{background:linear-gradient(135deg,#0071e3,#5e5ce6);}
+  .v2{background:linear-gradient(135deg,#1d1d1f,#3a3a3c);}
+  .v3{background:linear-gradient(135deg,#ff375f,#ff9f0a);}
+  .v4{background:linear-gradient(135deg,#30d158,#64d2ff);}
+
+  .icon-big{
+    font-size:64px;color:rgba(255,255,255,.9);
+    filter:drop-shadow(0 6px 14px rgba(0,0,0,.2));
+  }
+
+  /* ---------- 滚动揭示 ---------- */
+  .reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.8,.2,1);}
+  .reveal.in{opacity:1;transform:none;}
+
+  /* ---------- 数据条 ---------- */
+  .stats{display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin-top:60px;}
+  .stat{text-align:center;min-width:160px;}
+  .stat .num{font-size:48px;font-weight:700;letter-spacing:-.02em;color:var(--ink);}
+  .dark .stat .num{color:#fff;}
+  .stat .label{font-size:15px;color:var(--ink-soft);margin-top:4px;}
+  .dark .stat .label{color:#a1a1a6;}
+
+  /* ---------- 大图 Banner ---------- */
+  .banner{
+    min-height:80vh;display:flex;align-items:center;justify-content:center;
+    text-align:center;color:#fff;padding:120px 22px;position:relative;overflow:hidden;
+    background:radial-gradient(800px 500px at 50% 120%, rgba(0,113,227,.4), transparent 70%),#000;
+  }
+  .banner h2{font-size:clamp(40px,7vw,80px);font-weight:700;letter-spacing:-.02em;}
+  .banner p{font-size:21px;color:#a1a1a6;margin-top:14px;}
+  .banner .orb{
+    position:absolute;width:520px;height:520px;border-radius:50%;
+    background:radial-gradient(circle,rgba(41,151,255,.5),transparent 60%);
+    filter:blur(40px);top:-120px;left:50%;transform:translateX(-50%);
+    animation:pulse 8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:translateX(-50%) scale(1);opacity:.7;}
+    50%{transform:translateX(-50%) scale(1.15);opacity:1;}
+  }
+
+  /* ---------- CTA ---------- */
+  .cta-final{padding:120px 22px;text-align:center;}
+  .cta-final h2{font-size:clamp(36px,6vw,56px);font-weight:700;letter-spacing:-.01em;}
+  .cta-final p{color:var(--ink-soft);font-size:21px;margin-top:12px;}
+  .price-pill{
+    display:inline-block;margin-top:28px;padding:8px 18px;border-radius:980px;
+    background:#f5f5f7;color:var(--ink);font-size:15px;
+  }
+
+  /* ---------- 页脚 ---------- */
+  footer{background:#f5f5f7;padding:40px 22px;color:var(--ink-soft);font-size:12px;}
+  .foot-inner{max-width:1024px;margin:0 auto;}
+  .foot-cols{display:flex;flex-wrap:wrap;gap:40px;margin-bottom:30px;}
+  .foot-col{flex:1;min-width:140px;}
+  .foot-col h4{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:10px;}
+  .foot-col ul{list-style:none;}
+  .foot-col li{margin:6px 0;}
+  .foot-col a{color:var(--ink-soft);}
+  .legal{border-top:1px solid var(--line);padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+
+  /* ---------- 滚动指示器 ---------- */
+  .scroll-hint{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    width:26px;height:42px;border:2px solid var(--ink-soft);border-radius:14px;
+    display:flex;justify-content:center;padding-top:6px;opacity:.5;z-index:50;
+    transition:opacity .4s ease;
+  }
+  .scroll-hint.hidden{opacity:0;pointer-events:none;}
+  .scroll-hint .dot{
+    width:4px;height:8px;border-radius:2px;background:var(--ink-soft);
+    animation:wheel 1.6s ease infinite;
+  }
+  @keyframes wheel{
+    0%{transform:translateY(0);opacity:1;}
+    100%{transform:translateY(14px);opacity:0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- 导航 -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-brand"></div>
+    <ul class="nav-links">
+      <li><a href="#overview">概览</a></li>
+      <li><a href="#features">功能</a></li>
+      <li><a href="#tech">技术</a></li>
+      <li><a href="#pricing">价格</a></li>
+      <li><a href="#support">支持</a></li>
+    </ul>
+    <a class="nav-cta" href="#pricing">立即购买</a>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="overview">
+  <div class="eyebrow">全新 Aura 系列</div>
+  <h1>未来，<br>触手可及。</h1>
+  <p class="sub">搭载 Aura 芯片，以极致性能与优雅设计，重新定义你与世界的连接方式。</p>
+  <div class="cta-row">
+    <a class="btn btn-primary" href="#pricing">立即购买</a>
+    <a class="btn btn-ghost" href="#features">了解更多 ›</a>
+  </div>
+  <div class="hero-visual"><div class="glow"></div></div>
+</header>
+
+<!-- 特性 -->
+<section class="section" id="features">
+  <div class="wrap center">
+    <h2 class="reveal">为每一个瞬间<br>而设计。</h2>
+    <p class="lead reveal center" style="margin-left:auto;margin-right:auto;">从清晨的第一缕光到深夜的最后一次触控，Aura 始终以你为中心。</p>
+  </div>
+
+  <div class="wrap">
+    <div class="grid">
+      <div class="card card-6 reveal">
+        <div>
+          <h3>Aura 芯片</h3>
+          <p>前所未有的算力，能效比提升 40%。</p>
+        </div>
+        <div class="visual v1"><span class="icon-big">⚡</span></div>
+      </div>
+      <div class="card card-6 reveal">
+        <div>
+          <h3>超视网膜 XDR</h3>
+          <p>10 亿色彩，明暗之间的每一处细节。</p>
+        </div>
+        <div class="visual v2"><span class="icon-big">✺</span></div>
+      </div>
+      <div class="card card-4 reveal">
+        <div>
+          <h3>全天续航</h3>
+          <p>最长 22 小时，从早到晚。</p>
+        </div>
+        <div class="visual v3"><span class="icon-big">☼</span></div>
+      </div>
+      <div class="card card-4 reveal">
+        <div>
+          <h3>隐私优先</h3>
+          <p>端侧智能，数据始终属于你。</p>
+        </div>
+        <div class="visual v4"><span class="icon-big">⚖</span></div>
+      </div>
+      <div class="card card-4 reveal">
+        <div>
+          <h3>无缝生态</h3>
+          <p>跨设备协作，如丝般顺滑。</p>
+        </div>
+        <div class="visual v1"><span class="icon-big">⌘</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 数据 -->
+<section class="section dark" id="tech">
+  <div class="wrap center">
+    <h2 class="reveal">数据，会说话。</h2>
+    <p class="lead reveal center" style="margin-left:auto;margin-right:auto;">每一项指标，都是对极致的追求。</p>
+    <div class="stats">
+      <div class="stat reveal"><div class="num" data-target="40">0</div><div class="label">% 能效提升</div></div>
+      <div class="stat reveal"><div class="num" data-target="22">0</div><div class="label">小时续航</div></div>
+      <div class="stat reveal"><div class="num" data-target="10">0</div><div class="label">亿色显示</div></div>
+      <div class="stat reveal"><div class="num" data-target="120">0</div><div class="label">Hz 刷新率</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 大图 Banner -->
+<section class="banner">
+  <div class="orb"></div>
+  <div class="reveal" style="position:relative;z-index:2;">
+    <h2>暗夜之中，<br>依然闪耀。</h2>
+    <p>Aura 自适应显示，让黑暗也成为一种美。</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-final" id="pricing">
+  <h2 class="reveal">准备好拥有它了吗？</h2>
+  <p class="reveal">从今天起，体验不一样的未来。</p>
+  <div class="reveal">
+    <span class="price-pill">起售价 ¥8,999 · 免息分期</span>
+  </div>
+  <div class="cta-row reveal" style="display:flex;gap:18px;justify-content:center;margin-top:32px;flex-wrap:wrap;">
+    <a class="btn btn-primary" href="#">立即购买</a>
+    <a class="btn btn-ghost" href="#support">查看规格 ›</a>
+  </div>
+</section>
+
+<!-- 页脚 -->
+<footer id="support">
+  <div class="foot-inner">
+    <div class="foot-cols">
+      <div class="foot-col">
+        <h4>购买</h4>
+        <ul>
+          <li><a href="#">在线商店</a></li>
+          <li><a href="#">配置比较</a></li>
+          <li><a href="#">分期与教育优惠</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>了解</h4>
+        <ul>
+          <li><a href="#">技术规格</a></li>
+          <li><a href="#">环保理念</a></li>
+          <li><a href="#">无障碍</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>支持</h4>
+        <ul>
+          <li><a href="#">联系客服</a></li>
+          <li><a href="#">保修服务</a></li>
+          <li><a href="#">社区</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>公司</h4>
+        <ul>
+          <li><a href="#">关于我们</a></li>
+          <li><a href="#">新闻动态</a></li>
+          <li><a href="#">招贤纳士</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Aura. 保留所有权利。</span>
+      <span>隐私政策 · 使用条款 · 法律信息</span>
+    </div>
+  </div>
+</footer>
+
+<div class="scroll-hint" id="scrollHint"><div class="dot"></div></div>
+
+<script>
+  // 滚动揭示
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); }
+    });
+  },{threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // 数字递增
+  const counters = document.querySelectorAll('.num[data-target]');
+  const cio = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = +el.dataset.target;
+        const dur = 1400; const start = performance.now();
+        function tick(now){
+          const p = Math.min((now-start)/dur,1);
+          const eased = 1-Math.pow(1-p,3);
+          el.textContent = Math.round(target*eased);
+          if(p<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        cio.unobserve(el);
+      }
+    });
+  },{threshold:0.5});
+  counters.forEach(c=>cio.observe(c));
+
+  // 滚动提示隐藏
+  const hint = document.getElementById('scrollHint');
+  window.addEventListener('scroll',()=>{
+    if(window.scrollY > 80){ hint.classList.add('hidden'); }
+    else { hint.classList.remove('hidden'); }
+  },{passive:true});
+
+  // 品牌名动态生成小logo
+  document.querySelector('.nav-brand').textContent = '◆ Aura';
+</script>
+</body>
+</html>

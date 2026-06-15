@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aura Pro — 超越感官的纯净之声</title>
+<style>
+  /* ============ Reset & Base ============ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #fff;
+    color: #1d1d1f;
+    overflow-x: hidden;
+    line-height: 1.47;
+    font-weight: 400;
+    letter-spacing: -.003em;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; }
+
+  /* ============ Apple-blue accent ============ */
+  :root {
+    --apple-blue: #0071e3;
+    --apple-blue-hover: #0077ed;
+    --ink: #1d1d1f;
+    --ink-soft: #6e6e73;
+    --bg-gray: #f5f5f7;
+    --bg-dark: #000;
+  }
+
+  /* ============ Announcement bar ============ */
+  .announce {
+    background: #1d1d1f;
+    color: #f5f5f7;
+    text-align: center;
+    font-size: 14px;
+    padding: 12px 22px;
+    letter-spacing: -.01em;
+  }
+  .announce a { color: #2997ff; }
+  .announce a:hover { text-decoration: underline; }
+
+  /* ============ Navigation ============ */
+  nav.bar {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: rgba(245, 245, 247, 0.72);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .nav-inner {
+    max-width: 1024px;
+    margin: 0 auto;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 22px;
+  }
+  .nav-inner ul {
+    list-style: none;
+    display: flex;
+    gap: 0;
+    flex: 1;
+    justify-content: space-evenly;
+  }
+  .nav-inner ul li a {
+    font-size: 12px;
+    color: #1d1d1f;
+    opacity: .8;
+    transition: opacity .2s;
+    white-space: nowrap;
+  }
+  .nav-inner ul li a:hover { opacity: 1; }
+  .apple-logo {
+    width: 18px; height: 22px;
+    fill: #1d1d1f;
+    flex-shrink: 0;
+  }
+  .nav-icons { display: flex; gap: 16px; align-items: center; flex-shrink: 0; }
+  .nav-icons svg { width: 14px; height: 16px; fill: #1d1d1f; opacity: .8; }
+
+  /* ============ Shared section ============ */
+  section { position: relative; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; }
+
+  /* ============ Hero ============ */
+  .hero {
+    background: linear-gradient(180deg, #fafafc 0%, #f5f5f7 100%);
+    text-align: center;
+    padding: 56px 22px 40px;
+    overflow: hidden;
+  }
+  .hero h1 {
+    font-size: clamp(48px, 9vw, 96px);
+    font-weight: 600;
+    letter-spacing: -.015em;
+    line-height: 1.05;
+    margin-bottom: 6px;
+    background: linear-gradient(180deg, #1d1d1f 0%, #434343 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero .sub {
+    font-size: clamp(21px, 2.4vw, 28px);
+    font-weight: 600;
+    letter-spacing: .004em;
+    color: #1d1d1f;
+    margin-bottom: 8px;
+  }
+  .hero .tag {
+    font-size: clamp(17px, 1.8vw, 21px);
+    color: #6e6e73;
+    font-weight: 400;
+    max-width: 640px;
+    margin: 0 auto 28px;
+  }
+  .cta-row {
+    display: flex;
+    gap: 28px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+  .cta-row a {
+    font-size: 17px;
+    color: var(--apple-blue);
+    font-weight: 400;
+  }
+  .cta-row a.primary {
+    background: var(--apple-blue);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 980px;
+    transition: background .2s;
+  }
+  .cta-row a.primary:hover { background: var(--apple-blue-hover); }
+  .cta-row a.link:hover { text-decoration: underline; }
+
+  /* Product visual (CSS-rendered) */
+  .product-stage {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .glow {
+    position: absolute;
+    width: 80%; height: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%,
+      rgba(120, 130, 255, 0.45) 0%,
+      rgba(180, 110, 255, 0.25) 35%,
+      rgba(255, 120, 200, 0.12) 60%,
+      transparent 75%);
+    filter: blur(40px);
+    animation: float 8s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(0,-14px) scale(1.04); }
+  }
+
+  /* Earbuds rendered in pure CSS */
+  .earbuds {
+    position: relative;
+    width: 360px; height: 360px;
+    z-index: 2;
+    filter: drop-shadow(0 30px 50px rgba(0,0,0,0.25));
+    animation: bob 6s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50% { transform: translateY(-12px) rotate(2deg); }
+  }
+  .bud {
+    position: absolute;
+    width: 130px; height: 170px;
+    background: linear-gradient(145deg, #ffffff 0%, #e8e8ec 45%, #c9c9d0 100%);
+    border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%;
+    box-shadow:
+      inset -8px -10px 24px rgba(0,0,0,0.18),
+      inset 6px 8px 18px rgba(255,255,255,0.7),
+      0 12px 24px rgba(0,0,0,0.18);
+  }
+  .bud::after {
+    content: "";
+    position: absolute;
+    bottom: -54px; left: 50%;
+    transform: translateX(-50%);
+    width: 38px; height: 78px;
+    background: linear-gradient(180deg, #ffffff 0%, #dcdce2 100%);
+    border-radius: 0 0 18px 18px;
+    box-shadow: inset -4px 0 8px rgba(0,0,0,0.12), inset 4px 0 8px rgba(255,255,255,0.6);
+  }
+  .bud.left { top: 95px; left: 30px; transform: rotate(-18deg); }
+  .bud.right { top: 95px; right: 30px; transform: rotate(18deg) scaleX(-1); }
+  .bud .speaker {
+    position: absolute;
+    top: 28px; left: 50%;
+    transform: translateX(-50%);
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #5a5a66 0%, #1a1a1f 70%);
+    box-shadow: inset 2px 2px 6px rgba(255,255,255,0.15);
+  }
+
+  /* ============ Section heading style ============ */
+  .sec-label {
+    text-align: center;
+    font-size: 17px;
+    color: var(--apple-blue);
+    font-weight: 600;
+    letter-spacing: .012em;
+    margin-bottom: 8px;
+  }
+  .sec-title {
+    text-align: center;
+    font-size: clamp(40px, 6vw, 80px);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    line-height: 1.07;
+    color: #1d1d1f;
+  }
+
+  /* ============ Feature Bento ============ */
+  .bento {
+    background: #fff;
+    padding: 12px 11px;
+  }
+  .bento-grid {
+    max-width: 1240px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: 280px;
+    gap: 11px;
+  }
+  .tile {
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    padding: 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform .4s ease;
+  }
+  .tile:hover { transform: translateY(-4px); }
+  .tile h3 {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -.01em;
+    line-height: 1.15;
+  }
+  .tile p {
+    font-size: 17px;
+    color: #434343;
+    max-width: 320px;
+    line-height: 1.4;
+  }
+  .tile .glyph {
+    align-self: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 96px;
+    line-height: 1;
+  }
+
+  /* Tile spans */
+  .t-anc  { grid-column: span 4; grid-row: span 2; }
+  .t-noise{ grid-column: span 2; grid-row: span 1; }
+  .t-batt { grid-column: span 2; grid-row: span 1; }
+  .t-spat { grid-column: span 2; grid-row: span 2; }
+  .t-chip { grid-column: span 2; grid-row: span 2; }
+  .t-fit  { grid-column: span 2; grid-row: span 2; }
+
+  .t-anc { background: linear-gradient(160deg, #1d1d1f 0%, #2a2a30 100%); color: #fff; }
+  .t-anc h3, .t-anc p { color: #fff; }
+  .t-anc p { color: #d2d2d7; }
+  .t-noise { background: linear-gradient(135deg, #eef2ff 0%, #dbe4ff 100%); }
+  .t-batt  { background: linear-gradient(135deg, #fff4e6 0%, #ffe2c2 100%); }
+  .t-spat  { background: linear-gradient(180deg, #0a0a0c 0%, #1a1a22 100%); color: #fff; }
+  .t-spat h3, .t-spat p { color: #fff; }
+  .t-spat p { color: #c7c7cc; }
+  .t-chip  { background: linear-gradient(135deg, #f5f5f7 0%, #e3e3e8 100%); }
+  .t-fit   { background: linear-gradient(135deg, #ffeef2 0%, #ffd5e1 100%); }
+
+  /* animated bars in ANC tile */
+  .waves { display:flex; align-items:flex-end; gap:8px; height:90px; }
+  .waves span {
+    width: 8px; border-radius: 4px;
+    background: linear-gradient(180deg, #7c83ff, #c560ff);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .waves span:nth-child(1){ height: 30%; animation-delay: 0s; }
+  .waves span:nth-child(2){ height: 70%; animation-delay: .15s; }
+  .waves span:nth-child(3){ height: 100%; animation-delay: .3s; }
+  .waves span:nth-child(4){ height: 55%; animation-delay: .45s; }
+  .waves span:nth-child(5){ height: 85%; animation-delay: .6s; }
+  .waves span:nth-child(6){ height: 40%; animation-delay: .75s; }
+  .waves span:nth-child(7){ height: 65%; animation-delay: .9s; }
+  @keyframes pulse {
+    0%, 100% { transform: scaleY(.5); opacity: .6; }
+    50% { transform: scaleY(1); opacity: 1; }
+  }
+
+  /* battery glyph */
+  .batt-ring {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    background: conic-gradient(#ff9f0a 0% 78%, #ffe2c2 78% 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .batt-ring::before {
+    content: ""; position: absolute; inset: 12px;
+    background: linear-gradient(135deg, #fff4e6, #ffe2c2);
+    border-radius: 50%;
+  }
+  .batt-ring span {
+    position: relative; z-index: 2;
+    font-size: 28px; font-weight: 700; color: #b25a00;
+  }
+
+  /* spatial orb */
+  .orb3d {
+    width: 150px; height: 150px; border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 30%, #6a7bff 0%, #9a4fff 40%, #2a0e5e 90%);
+    box-shadow:
+      0 0 60px rgba(124, 131, 255, 0.5),
+      inset -10px -16px 40px rgba(0,0,0,0.4),
+      inset 8px 10px 30px rgba(255,255,255,0.25);
+    animation: spin 14s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0) translateX(8px) rotate(0); }
+    100% { transform: rotate(360deg) translateX(8px) rotate(-360deg); }
+  }
+
+  /* chip glyph */
+  .chip-glyph {
+    width: 110px; height: 110px;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #2a2a30, #1d1d1f);
+    position: relative;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08), 0 10px 30px rgba(0,0,0,0.25);
+  }
+  .chip-glyph::before, .chip-glyph::after {
+    content: ""; position: absolute; inset: -10px;
+    background:
+      linear-gradient(90deg, transparent 6px, #8e8e93 6px 8px, transparent 8px) 0 0 / 22px 22px,
+      linear-gradient(0deg, transparent 6px, #8e8e93 6px 8px, transparent 8px) 0 0 / 22px 22px;
+    opacity: .6;
+    mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+    mask-composite: exclude;
+  }
+  .chip-glyph::after { inset: -10px; }
+
+  /* ============ Reveal animation ============ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform .9s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============ Dark fullbleed section ============ */
+  .immersive {
+    background: #000;
+    color: #f5f5f7;
+    padding: 130px 22px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .immersive .sec-label { color: #8e8e93; }
+  .immersive .sec-title {
+    color: #f5f5f7;
+    background: linear-gradient(180deg, #ffffff 0%, #a0a0a8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    max-width: 900px; margin: 0 auto;
+  }
+  .immersive .lead {
+    font-size: 21px;
+    color: #a1a1a6;
+    margin-top: 20px;
+    max-width: 640px; margin-left: auto; margin-right: auto;
+  }
+  .mesh {
+    margin-top: 70px;
+    width: 100%; max-width: 1100px;
+    aspect-ratio: 2 / 1;
+    margin-left: auto; margin-right: auto;
+    border-radius: 30px;
+    background:
+      radial-gradient(at 20% 20%, #7c83ff 0px, transparent 50%),
+      radial-gradient(at 80% 20%, #ff6aa9 0px, transparent 50%),
+      radial-gradient(at 50% 80%, #00d4ff 0px, transparent 50%),
+      radial-gradient(at 30% 70%, #c560ff 0px, transparent 50%),
+      #050507;
+    filter: saturate(1.2);
+    box-shadow: 0 40px 100px rgba(124, 131, 255, 0.25);
+  }
+
+  /* ============ Stats ============ */
+  .stats {
+    background: var(--bg-gray);
+    padding: 110px 22px;
+  }
+  .stats-grid {
+    max-width: 1100px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-size: clamp(44px, 5vw, 72px);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    background: linear-gradient(180deg, #1d1d1f, #5a5a60);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat .lbl {
+    font-size: 17px; color: #6e6e73; margin-top: 6px;
+  }
+
+  /* ============ Colors ============ */
+  .colors {
+    background: #fff;
+    padding: 120px 22px 100px;
+    text-align: center;
+  }
+  .swatches {
+    display: flex; justify-content: center; gap: 18px;
+    margin-top: 40px; flex-wrap: wrap;
+  }
+  .swatch {
+    width: 46px; height: 46px; border-radius: 50%;
+    cursor: pointer; position: relative;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform .2s;
+  }
+  .swatch:hover { transform: scale(1.1); }
+  .swatch.active::after {
+    content: ""; position: absolute; inset: -6px;
+    border: 2px solid var(--apple-blue); border-radius: 50%;
+  }
+  .swatch.s-midnight { background: linear-gradient(145deg,#3a3a3e,#0a0a0c); }
+  .swatch.s-starlight { background: linear-gradient(145deg,#fff3df,#efe2c6); }
+  .swatch.s-silver { background: linear-gradient(145deg,#f5f5f7,#cfcfd4); }
+  .swatch.s-purple { background: linear-gradient(145deg,#c9a0ff,#7a4ed0); }
+  .swatch.s-pink { background: linear-gradient(145deg,#ffc6dc,#ff8ab3); }
+  .color-name {
+    margin-top: 28px; font-size: 17px; color: #6e6e73; min-height: 24px;
+  }
+  .color-case {
+    margin: 50px auto 0;
+    width: 220px; height: 110px;
+    border-radius: 40px;
+    background: linear-gradient(145deg,#ffffff,#e8e8ec);
+    box-shadow: inset -8px -8px 20px rgba(0,0,0,0.12), inset 6px 6px 16px rgba(255,255,255,0.8), 0 20px 40px rgba(0,0,0,0.12);
+    position: relative;
+    transition: background .6s ease;
+  }
+  .color-case::after {
+    content: ""; position: absolute; top: 18px; left: 50%; transform: translateX(-50%);
+    width: 12px; height: 4px; border-radius: 2px; background: #b0b0b6;
+  }
+
+  /* ============ CTA ============ */
+  .cta-band {
+    background: var(--bg-gray);
+    padding: 90px 22px;
+    text-align: center;
+  }
+  .cta-band h2 {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 600;
+    letter-spacing: -.02em;
+    margin-bottom: 18px;
+  }
+  .cta-band p { color: #6e6e73; font-size: 19px; margin-bottom: 26px; }
+  .price-pill {
+    display: inline-block;
+    font-size: 14px; color: #6e6e73;
+    margin-top: 18px;
+  }
+
+  /* ============ Footer ============ */
+  footer {
+    background: var(--bg-gray);
+    color: #6e6e73;
+    font-size: 12px;
+    padding: 30px 22px 20px;
+    border-top: 1px solid rgba(0,0,0,0.08);
+  }
+  .foot-inner { max-width: 980px; margin: 0 auto; }
+  .foot-disclaimer {
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .foot-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 30px;
+    margin-bottom: 24px;
+  }
+  .foot-col h4 {
+    font-size: 12px; font-weight: 600; color: #1d1d1f;
+    margin-bottom: 10px;
+  }
+  .foot-col ul { list-style: none; }
+  .foot-col ul li { margin-bottom: 8px; }
+  .foot-col ul li a { color: #434343; }
+  .foot-col ul li a:hover { text-decoration: underline; }
+  .foot-bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+  }
+  .foot-bottom .links a { margin-left: 16px; color: #434343; }
+  .foot-bottom .links a:hover { text-decoration: underline; }
+
+  /* ============ Responsive ============ */
+  @media (max-width: 832px) {
+    .nav-inner ul { display: none; }
+    .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 260px; }
+    .t-anc, .t-noise, .t-batt, .t-spat, .t-chip, .t-fit { grid-column: span 2; grid-row: span 1; }
+    .t-anc, .t-spat { grid-row: span 2; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 50px 20px; }
+    .foot-grid { grid-template-columns: repeat(2, 1fr); }
+    .earbuds { width: 260px; height: 260px; }
+    .bud { width: 100px; height: 130px; }
+    .bud::after { width: 30px; height: 60px; bottom: -40px; }
+    .bud .speaker { width: 36px; height: 36px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Announcement -->
+<div class="announce">
+  Aura Pro 现已开放预订。选购享 6 期免息分期，<a href="#">了解更多 &rsaquo;</a>
+</div>
+
+<!-- Nav -->
+<nav class="bar">
+  <div class="nav-inner">
+    <svg class="apple-logo" viewBox="0 0 18 22" aria-hidden="true"><path d="M14.94 11.6c.02 2.45 2.15 3.27 2.17 3.28-.02.06-.34 1.17-1.12 2.31-.67.98-1.37 1.96-2.47 1.98-1.08.02-1.43-.64-2.67-.64-1.24 0-1.63.62-2.66.66-1.07.04-1.88-1.06-2.56-2.04-1.39-2.01-2.45-5.68-1.03-8.16.71-1.23 1.98-2.01 3.36-2.03 1.04-.02 2.02.7 2.66.7.64 0 1.84-.86 3.1-.74.53.02 2.01.21 2.96 1.6-.08.05-1.77 1.03-1.74 3.08zM12.74 5.27c.57-.69.95-1.65.85-2.6-.82.03-1.81.55-2.4 1.24-.53.61-.99 1.58-.87 2.51.91.07 1.85-.46 2.42-1.15z"/></svg>
+    <ul>
+      <li><a href="#">商店</a></li>
+      <li><a href="#">Mac</a></li>
+      <li><a href="#">iPad</a></li>
+      <li><a href="#">iPhone</a></li>
+      <li><a href="#">Watch</a></li>
+      <li><a href="#">AirPods</a></li>
+      <li><a href="#">Aura Pro</a></li>
+      <li><a href="#">技术支持</a></li>
+    </ul>
+    <div class="nav-icons">
+      <svg viewBox="0 0 14 44" aria-hidden="true"><path d="M13.6 21.4c0-.46-.16-.9-.43-1.24a8.4 8.4 0 0 0-1.3-1.62 8.04 8.04 0 0 0-2.46-1.74 7.6 7.6 0 0 0-3.13-.66c-.4 0-.8.03-1.18.1a7.07 7.07 0 0 0-1.66.5l-.2.1a7.4 7.4 0 0 0-2.1 1.4 8.5 8.5 0 0 0-1.55 1.92c-.27.34-.43.78-.43 1.24 0 .46.16.9.43 1.24.42.66.93 1.27 1.55 1.92a7.4 7.4 0 0 0 2.1 1.4l.2.1c.53.22 1.08.38 1.66.5.38.06.78.1 1.18.1 1.1 0 2.15-.23 3.13-.66a8.04 8.04 0 0 0 2.46-1.74 8.4 8.4 0 0 0 1.3-1.62c.27-.34.43-.78.43-1.24zM8.28 14.5a9.5 9.5 0 0 1 3.78.78 9.94 9.94 0 0 1 3.06 2.1c.4.4.78.84 1.1 1.3.16.2.3.42.42.64.13.2.24.42.34.64.13.3.2.62.2.94 0 .32-.07.64-.2.94-.1.22-.21.44-.34.64-.12.22-.26.44-.42.64a10.5 10.5 0 0 1-1.1 1.3 9.94 9.94 0 0 1-3.06 2.1 9.5 9.5 0 0 1-3.78.78h-.16a9.5 9.5 0 0 1-3.78-.78 9.94 9.94 0 0 1-3.06-2.1 10.5 10.5 0 0 1-1.1-1.3c-.16-.2-.3-.42-.42-.64a4.5 4.5 0 0 1-.34-.64 2.2 2.2 0 0 1-.2-.94c0-.32.07-.64.2-.94.1-.22.21-.44.34-.64.12-.22.26-.44.42-.64a10.5 10.5 0 0 1 1.1-1.3 9.94 9.94 0 0 1 3.06-2.1 9.5 9.5 0 0 1 3.78-.78z"/></svg>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+  <h1 class="reveal">Aura Pro</h1>
+  <p class="sub reveal">超越感官的纯净之声。</p>
+  <p class="tag reveal">自适应降噪、空间音频与 40 小时续航，让每一段旋律都触手可及。</p>
+  <div class="cta-row reveal">
+    <a href="#buy" class="primary">立即购买</a>
+    <a href="#features" class="link">了解更多 &rsaquo;</a>
+  </div>
+  <div class="product-stage reveal">
+    <div class="glow"></div>
+    <div class="earbuds" aria-hidden="true">
+      <div class="bud left"><div class="speaker"></div></div>
+      <div class="bud right"><div class="speaker"></div></div>
+    </div>
+  </div>
+</header>
+
+<!-- Bento features -->
+<section class="bento" id="features">
+  <div class="bento-grid">
+    <div class="tile t-anc reveal">
+      <div>
+        <h3>自适应降噪。<br>世界，瞬时安静。</h3>
+        <p>每秒 48,000 次环境采样，实时抵消外界噪声，只留下你想听的声音。</p>
+      </div>
+      <div class="waves" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="tile t-noise reveal">
+      <div>
+        <h3>通透模式</h3>
+        <p>听见四周，无需摘下。</p>
+      </div>
+      <div class="glyph" style="font-size:64px;">🌬️</div>
+    </div>
+
+    <div class="tile t-batt reveal">
+      <div>
+        <h3>持久电力</h3>
+        <p>耳机 10 小时，搭配充电盒共 40 小时。</p>
+      </div>
+      <div class="batt-ring"><span>78%</span></div>
+    </div>
+
+    <div class="tile t-spat reveal">
+      <div>
+        <h3>动态空间音频</h3>
+        <p>头部追踪 + 定向声场，让声音环绕在你身侧。</p>
+      </div>
+      <div class="orb3d"></div>
+    </div>
+
+    <div class="tile t-chip reveal">
+      <div>
+        <h3>Aura H2 芯片</h3>
+        <p>神经网络引擎，处理音频延迟低至 12 毫秒。</p>
+      </div>
+      <div class="chip-glyph"></div>
+    </div>
+
+    <div class="tile t-fit reveal">
+      <div>
+        <h3>四种硅胶耳塞</h3>
+        <p>贴合每一种耳廓，主动贴合检测自动校准。</p>
+      </div>
+      <div class="glyph" style="font-size:64px;">👂</div>
+    </div>
+  </div>
+</section>
+
+<!-- Immersive dark -->
+<section class="immersive">
+  <p class="sec-label reveal">声学</p>
+  <h2 class="sec-title reveal">声音的每一帧，都被重新雕琢。</h2>
+  <p class="lead reveal">11mm 钛膜低音单元配合定制放大器，呈现从 20Hz 沉潜低频到 40kHz 通透高频的完整频段。</p>
+  <div class="mesh reveal"></div>
+</section>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="stats-grid">
+    <div class="stat reveal">
+      <div class="num" data-target="48">0</div>
+      <div class="lbl">每秒采样次数 (千)</div>
+    </div>
+    <div class="stat reveal">
+      <div class="num" data-target="12">0</div>
+      <div class="lbl">延迟毫秒数</div>
+    </div>
+    <div class="stat reveal">
+      <div class="num" data-target="40">0</div>
+      <div class="lbl">总续航小时</div>
+    </div>
+    <div class="stat reveal">
+      <div class="num" data-target="5">0</div>
+      <div class="lbl">充电分钟，聆听 1 小时</div>
+    </div>
+  </div>
+</section>
+
+<!-- Colors -->
+<section class="colors">
+  <p class="sec-label reveal">外观</p>
+  <h2 class="sec-title reveal">五种配色，一种纯粹。</h2>
+  <div class="swatches reveal" id="swatches">
+    <span class="swatch s-midnight active" data-name="午夜色" data-case="linear-gradient(145deg,#3a3a3e,#0a0a0c)"></span>
+    <span class="swatch s-starlight" data-name="星光色" data-case="linear-gradient(145deg,#fff3df,#efe2c6)"></span>
+    <span class="swatch s-silver" data-name="银色" data-case="linear-gradient(145deg,#f5f5f7,#cfcfd4)"></span>
+    <span class="swatch s-purple" data-name="紫色" data-case="linear-gradient(145deg,#c9a0ff,#7a4ed0)"></span>
+    <span class="swatch s-pink" data-name="粉色" data-case="linear-gradient(145deg,#ffc6dc,#ff8ab3)"></span>
+  </div>
+  <div class="color-name" id="colorName">午夜色</div>
+  <div class="color-case" id="colorCase"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" id="buy">
+  <h2 class="reveal">把 Aura Pro 带回家。</h2>
+  <p class="reveal">¥1,999 起。享免费镌刻与 6 期免息分期。</p>
+  <div class="reveal">
+    <a href="#" class="cta-row" style="display:inline-block;background:var(--apple-blue);color:#fff;padding:12px 28px;border-radius:980px;font-size:17px;">立即购买</a>
+  </div>
+  <div class="price-pill">分期方案适用于符合条件的订单。查看条款。</div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-disclaimer">
+      Aura Pro 充电盒、续航时长与降噪性能基于实验室测试数据。实际表现因使用情况、设置与环境等因素而异。颜色显示效果因屏幕不同可能存在差异。
+    </div>
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h4>选购及了解</h4>
+        <ul>
+          <li><a href="#">商店</a></li>
+          <li><a href="#">Mac</a></li>
+          <li><a href="#">iPad</a></li>
+          <li><a href="#">iPhone</a></li>
+          <li><a href="#">Watch</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Aura 专区</h4>
+        <ul>
+          <li><a href="#">Aura Pro</a></li>
+          <li><a href="#">Aura App</a></li>
+          <li><a href="#">空间音频</a></li>
+          <li><a href="#">配件</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>账户</h4>
+        <ul>
+          <li><a href="#">管理你的账户</a></li>
+          <li><a href="#">账户设置</a></li>
+          <li><a href="#">订阅</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>服务</h4>
+        <ul>
+          <li><a href="#">技术支持</a></li>
+          <li><a href="#">镌刻服务</a></li>
+          <li><a href="#">以旧换新</a></li>
+          <li><a href="#">分期计划</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>关于</h4>
+        <ul>
+          <li><a href="#">公司新闻</a></li>
+          <li><a href="#">环境责任</a></li>
+          <li><a href="#">无障碍</a></li>
+          <li><a href="#">隐私</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div>Copyright © 2026 示例公司。本页面为设计演示，非真实商品。</div>
+      <div class="links">
+        <a href="#">隐私政策</a>
+        <a href="#">使用条款</a>
+        <a href="#">销售政策</a>
+        <a href="#">法律信息</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+
+  // Stagger hero reveals
+  const heroEls = document.querySelectorAll('.hero .reveal');
+  heroEls.forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.12) + 's';
+  });
+
+  // Counter animation for stats
+  const counters = document.querySelectorAll('.stat .num[data-target]');
+  const cObserver = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = parseInt(el.dataset.target, 10);
+      const duration = 1400;
+      const start = performance.now();
+      const step = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + (el.textContent.includes('+') ? '+' : '');
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(step);
+      cObserver.unobserve(el);
+    });
+  }, { threshold: 0.6 });
+  counters.forEach((c) => cObserver.observe(c));
+
+  // Color swatch interaction
+  const swatches = document.querySelectorAll('.swatch');
+  const colorName = document.getElementById('colorName');
+  const colorCase = document.getElementById('colorCase');
+  swatches.forEach((s) => {
+    s.addEventListener('click', () => {
+      swatches.forEach((x) => x.classList.remove('active'));
+      s.classList.add('active');
+      colorName.textContent = s.dataset.name;
+      colorCase.style.background = s.dataset.case;
+    });
+  });
+</script>
+
+</body>
+</html>
