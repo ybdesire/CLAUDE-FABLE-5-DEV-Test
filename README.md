@@ -11,3 +11,8 @@
 - *-fp.html : is LLM generated html with system prompt CLAUDE-FABLE-5-DEV.md
 - *.html : is LLM generated html by default system prompt
 
+3. how tu run
+
+```bash
+claude --dangerously-skip-permissions --system-prompt-file CLAUDE-FABLE-5-DEV.md
+```
